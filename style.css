@@ -1,0 +1,31 @@
+body {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#board-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.area {
+  border: 1px solid black;
+  min-width: 5em;
+  min-height: 5em;
+}
+
+.area:hover {
+  background-color: aqua;
+}
+
+span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
