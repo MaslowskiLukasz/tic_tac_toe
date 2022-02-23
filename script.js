@@ -44,6 +44,27 @@ const Player = (name, symbol) => {
   };
 };
 
+const UIController = (() => {
+  const updateScore = (player1_score, player2_score) => {
+    const player1 = document.getElementById('player1-score');
+    const player2 = document.getElementById('player2-score');
+    player1.textContent = player1_score;
+    player2.textContent = player2_score;
+  }
+
+  const clearBoard = () => {
+    const areaList = document.getElementsByClassName('area');
+    for(let i = 0; i < areaList.length; i++) {
+      areaList[i].textContent = '';
+    }
+  }
+
+  return {
+    updateScore,
+    clearBoard
+  }
+})();
+
 const gameplayController = (() => {
   let _counter = 0;
   const _player1 = Player('Heniu', 'X');
@@ -84,24 +105,29 @@ const gameplayController = (() => {
     _initGame();
     _areas.forEach(el => el.addEventListener('click', event => {
       const index = parseInt(event.target.dataset.index);
-      console.log(index);
-      console.log(board.getIndexValue(index));
       if (board.getIndexValue(index) == 0) {
         if (_counter % 2 == 0) {
           event.target.textContent = _player1.getSymbol();
           board.set(1, index);
           if (_checkWinningConditions(_player1.getSymbol())) {
             console.log('player 1 wins');
+            _player1.incrementScore();
+            board.clear();
+            UIController.clearBoard();
           }
         } else {
           event.target.textContent = _player2.getSymbol();
           board.set(-1, index);
           if (_checkWinningConditions(_player2.getSymbol())) {
             console.log('player 2 wins');
+            _player2.incrementScore();
+            board.clear();
+            UIController.clearBoard();
           }
         }
         _counter++;
       }
+      UIController.updateScore(_player1.getScore(), _player2.getScore());
     }));
   }
 
