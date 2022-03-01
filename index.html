@@ -3,30 +3,37 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <section class="player-section">
-      <h2>Player 1</h2>
-      <p id="player1-score">0</p>
+    <section id="winner-display-section">
+      <h1 id="result">Draw</h1>
+      <h2 id="winner">Player 1</h2>
+      <button id="play-again-btn" class="btn">Play again</button>
     </section>
-    <section id="board-section">
-      <div class="row">
-        <span class="area" data-index=0></span>
-        <span class="area" data-index=1></span>
-        <span class="area" data-index=2></span>
-      </div>
-      <div class="row">
-        <span class="area" data-index=3></span>
-        <span class="area" data-index=4></span>
-        <span class="area" data-index=5></span>
-      </div>
-      <div class="row">
-        <span class="area" data-index=6></span>
-        <span class="area" data-index=7></span>
-        <span class="area" data-index=8></span>
-      </div>
-    </section>
-    <section class="player-section">
-      <h2>Player 2</h2>
-      <p id="player2-score">0</p>
+    <section id="main-section">
+      <section class="player-section">
+        <h2 id="player1-name">Player 1</h2>
+        <p id="player1-score">0</p>
+      </section>
+      <section id="board-section">
+        <div class="row">
+          <span class="area" data-index=0></span>
+          <span class="area" data-index=1></span>
+          <span class="area" data-index=2></span>
+        </div>
+        <div class="row">
+          <span class="area" data-index=3></span>
+          <span class="area" data-index=4></span>
+          <span class="area" data-index=5></span>
+        </div>
+        <div class="row">
+          <span class="area" data-index=6></span>
+          <span class="area" data-index=7></span>
+          <span class="area" data-index=8></span>
+        </div>
+      </section>
+      <section class="player-section">
+        <h2 id="player2-name">Player 2</h2>
+        <p id="player2-score">0</p>
+      </section>
     </section>
     <script src="script.js"></script>
   </body>

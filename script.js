@@ -45,6 +45,19 @@ const Player = (name, symbol) => {
 };
 
 const UIController = (() => {
+  const _playAgainBtn = document.getElementById('play-again-btn');
+  const _resultSection = document.getElementById('winner-display-section');
+  const _result = document.getElementById('result');
+  const _winner = document.getElementById('winner');
+
+  const init = () => {
+    _playAgainBtn.addEventListener('click', () => {
+      board.clear();
+      clearBoard();
+      _activateBoard();
+      _resultSection.style.visibility = 'hidden';
+    })
+  }
   const updateScore = (player1_score, player2_score) => {
     const player1 = document.getElementById('player1-score');
     const player2 = document.getElementById('player2-score');
@@ -59,9 +72,49 @@ const UIController = (() => {
     }
   }
 
+  const setPlayersName = (name1, name2) => {
+    const player1 = document.getElementById('player1-name');
+    const player2 = document.getElementById('player2-name');
+
+    player1.textContent = name1;
+    player2.textContent = name2;
+  }
+
+  const displayWinner = (name) => {
+    _result.textContent = 'Winner';
+    _winner.textContent = name;
+    _resultSection.style.visibility = 'visible';
+  }
+
+  const displayDraw = () => {
+    _result.textContent = "Draw";
+    _winner.textContent = '\u00A0';
+    _resultSection.style.visibility = 'visible';
+  }
+
+  const drawSymbol = (e, symbol) => {
+    e.target.textContent = symbol;
+  }
+
+  const blockBoard = () => {
+    const areas = document.querySelectorAll('.area');
+    areas.forEach(el => { el.style.pointerEvents = 'none' });
+  }
+
+  const _activateBoard = () => {
+    const areas = document.querySelectorAll('.area');
+    areas.forEach(el => { el.style.pointerEvents = 'auto' });
+  }
+
   return {
+    init,
     updateScore,
-    clearBoard
+    clearBoard,
+    setPlayersName,
+    displayWinner,
+    displayDraw,
+    drawSymbol,
+    blockBoard
   }
 })();
 
@@ -95,37 +148,45 @@ const gameplayController = (() => {
     }
   }
 
+  const _checkDraw = () => {
+    return !board.getStatus().includes(0);
+  }
+
   const _initGame = () => {
     _player1.resetScore();
     _player2.resetScore();
+    UIController.setPlayersName(_player1.getName(), _player2.getName());
     board.clear();
   }
 
   const play = () => {
     _initGame();
+    UIController.init();
     _areas.forEach(el => el.addEventListener('click', event => {
       const index = parseInt(event.target.dataset.index);
       if (board.getIndexValue(index) == 0) {
         if (_counter % 2 == 0) {
-          event.target.textContent = _player1.getSymbol();
+          UIController.drawSymbol(event, _player1.getSymbol());
           board.set(1, index);
           if (_checkWinningConditions(_player1.getSymbol())) {
-            console.log('player 1 wins');
             _player1.incrementScore();
-            board.clear();
-            UIController.clearBoard();
+            UIController.displayWinner(_player1.getName());
+            UIController.blockBoard();
           }
         } else {
-          event.target.textContent = _player2.getSymbol();
+          UIController.drawSymbol(event, _player2.getSymbol());
           board.set(-1, index);
           if (_checkWinningConditions(_player2.getSymbol())) {
-            console.log('player 2 wins');
             _player2.incrementScore();
-            board.clear();
-            UIController.clearBoard();
+            UIController.displayWinner(_player2.getName())
+            UIController.blockBoard();
           }
         }
         _counter++;
+      }
+      if (_checkDraw()) {
+        UIController.displayDraw();
+        UIController.blockBoard();
       }
       UIController.updateScore(_player1.getScore(), _player2.getScore());
     }));
