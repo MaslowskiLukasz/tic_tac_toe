@@ -31,17 +31,26 @@ const gameplayController = (() => {
   const _checkDraw = () => {
     return !board.getStatus().includes(0);
   }
+  
+  const _winner = (player) => {
+    player.incrementScore();
+    UIController.gameOverWinner(player.getName());
+  }
+
+  const _changePlayersTurn = () => {
+    _counter++;
+    UIController.setAreaHoverColor(_counter);
+  }
 
   const _initGame = () => {
     _player1.resetScore();
     _player2.resetScore();
-    UIController.setPlayersName(_player1.getName(), _player2.getName());
+    UIController.init(_player1.getName(), _player2.getName());
     board.clear();
   }
 
   const play = () => {
     _initGame();
-    UIController.init();
     _areas.forEach(el => el.addEventListener('click', event => {
       const index = parseInt(event.target.dataset.index);
       if (board.getIndexValue(index) == 0) {
@@ -49,26 +58,20 @@ const gameplayController = (() => {
           UIController.drawSymbol(event, _player1.getSymbol());
           board.set(1, index);
           if (_checkWinningConditions(_player1.getSymbol())) {
-            _player1.incrementScore();
-            UIController.displayWinner(_player1.getName());
-            UIController.blockBoard();
+            _winner(_player1);
           }
         } else {
           UIController.drawSymbol(event, _player2.getSymbol());
           board.set(-1, index);
           if (_checkWinningConditions(_player2.getSymbol())) {
-            _player2.incrementScore();
-            UIController.displayWinner(_player2.getName())
-            UIController.blockBoard();
+            _winner(_player2);
           }
         }
-        _counter++;
-        UIController.blockArea(el);
-        UIController.setAreaHoverColor(_counter);
+        _changePlayersTurn(_counter);
       }
+
       if (_checkDraw()) {
-        UIController.displayDraw();
-        UIController.blockBoard();
+        UIController.gameOverDraw();
       }
       UIController.updateScore(_player1.getScore(), _player2.getScore());
     }));
