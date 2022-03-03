@@ -1,3 +1,8 @@
+:root {
+  --player1-color: #BDE0FE;
+  --player2-color: #FFC8DD;
+}
+
 body {
   height: 100%;
   display: flex;
@@ -7,10 +12,11 @@ body {
 }
 
 #winner-display-section {
-  margin-top: 2em;
-  margin-bottom: 8em;
+  padding-top: 2em;
+  padding-bottom: 4em;
   text-align: center;
   visibility: hidden;
+  width: 100%;
 }
 
 #main-section {
@@ -35,8 +41,12 @@ body {
   min-height: 5em;
 }
 
-.area:hover {
-  background-color: aqua;
+.player1-hover:hover {
+  background-color: var(--player1-color);
+}
+
+.player2-hover:hover {
+  background-color: var(--player2-color);
 }
 
 span {
@@ -50,4 +60,15 @@ span {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 4em;
+}
+
+.btn {
+  all: unset;
+  border: 1px black solid;
+  padding: 1em;
+}
+
+.btn:hover {
+  background-color: #CDB4DB;
 }
