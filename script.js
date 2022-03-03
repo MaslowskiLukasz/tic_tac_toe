@@ -56,6 +56,7 @@ const UIController = (() => {
       clearBoard();
       _activateBoard();
       _resultSection.style.visibility = 'hidden';
+      setAreaHoverColor(0);
     })
   }
   const updateScore = (player1_score, player2_score) => {
@@ -101,9 +102,28 @@ const UIController = (() => {
     areas.forEach(el => { el.style.pointerEvents = 'none' });
   }
 
+  const blockArea = (el) => {
+    el.style.pointerEvents = 'none';
+  }
+
   const _activateBoard = () => {
     const areas = document.querySelectorAll('.area');
     areas.forEach(el => { el.style.pointerEvents = 'auto' });
+  }
+
+  const setAreaHoverColor = (counter) => {
+    const areas = document.querySelectorAll('.area');
+    if (counter % 2 == 0) {
+      areas.forEach(x => {
+        x.classList.remove('player2-hover');
+        x.classList.add('player1-hover');
+      });
+    } else {
+      areas.forEach(x => {
+        x.classList.remove('player1-hover');
+        x.classList.add('player2-hover');
+      });
+    }
   }
 
   return {
@@ -114,7 +134,9 @@ const UIController = (() => {
     displayWinner,
     displayDraw,
     drawSymbol,
-    blockBoard
+    blockBoard,
+    blockArea,
+    setAreaHoverColor
   }
 })();
 
@@ -183,6 +205,8 @@ const gameplayController = (() => {
           }
         }
         _counter++;
+        UIController.blockArea(el);
+        UIController.setAreaHoverColor(_counter);
       }
       if (_checkDraw()) {
         UIController.displayDraw();
